@@ -2,4 +2,5 @@ aiohttp
 line-bot-sdk
 fastapi
 uvicorn
+linedify
 SQLAlchemy
