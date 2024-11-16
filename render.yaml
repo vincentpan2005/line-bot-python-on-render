@@ -2,7 +2,7 @@ services:
 - type: web
   name: line-bot-dify-render
   env: python
-  repo: https://github.com/uezo/linedify.git
+#  repo: https://github.com/uezo/linedify.git
   buildCommand: pip install gunicorn linedify -r requirements.txt
   startCommand: gunicorn run:app
   plan: free
