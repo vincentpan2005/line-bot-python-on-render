@@ -1,10 +1,10 @@
 services:
 - type: web
-  name: line-bot-python-flask
+  name: line-bot-dify-render
   env: python
-  repo: https://github.com/line/line-bot-sdk-python.git
-  buildCommand: cd examples/flask-echo;pip install gunicorn -r requirements.txt
-  startCommand: cd examples/flask-echo;gunicorn app:app
+  repo: https://github.com/uezo/linedify.git
+  buildCommand: pip install gunicorn linedify -r requirements.txt
+  startCommand: gunicorn run:app
   plan: free
   autoDeploy: false
   envVars:
@@ -12,6 +12,25 @@ services:
     sync: false
   - key: LINE_CHANNEL_SECRET
     sync: false
+  - key: DIFY_API_KEY
+    sync: false
+  - key: DIFY_BASE_URL
+    sync: false
+  - key: DIFY_USER
+    sync: false
+#- type: web
+#  name: line-bot-python-flask
+#  env: python
+#  repo: https://github.com/line/line-bot-sdk-python.git
+#  buildCommand: cd examples/flask-echo;pip install gunicorn -r requirements.txt
+#  startCommand: cd examples/flask-echo;gunicorn app:app
+#  plan: free
+#  autoDeploy: false
+#  envVars:
+#  - key: LINE_CHANNEL_ACCESS_TOKEN
+#    sync: false
+#  - key: LINE_CHANNEL_SECRET
+#    sync: false
 # - type: web
 #   name: line-bot-python-flask-with-handler
 #   env: python
