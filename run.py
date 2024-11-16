@@ -1,14 +1,16 @@
+import os
+import sys
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request, BackgroundTasks
 from linedify import LineDify
 
 # LINE Bot - Dify Agent Integrator
 line_dify = LineDify(
-    line_channel_access_token=LINE_CHANNEL_ACCESS_TOKEN,
-    line_channel_secret=LINE_CHANNEL_SECRET,
-    dify_api_key=DIFY_API_KEY,
-    dify_base_url=DIFY_BASE_URL,
-    dify_user=DIFY_USER
+    line_channel_access_token=os.getenv('LINE_CHANNEL_ACCESS_TOKEN', None),
+    line_channel_secret=os.getenv('LINE_CHANNEL_SECRET', None),
+    dify_api_key=os.getenv('DIFY_API_KEY', None),
+    dify_base_url=os.getenv('DIFY_BASE_URL', None),
+    dify_user=os.getenv('DIFY_USER', None)
 )
 
 # FastAPI
