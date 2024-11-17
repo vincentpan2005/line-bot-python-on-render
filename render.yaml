@@ -4,7 +4,7 @@ services:
   env: python
 #  repo: https://github.com/uezo/linedify.git
   buildCommand: pip install -r requirements.txt
-  startCommand: unicorn run:app --reload
+  startCommand: unicorn main:app --reload
   plan: free
   autoDeploy: false
   envVars:
