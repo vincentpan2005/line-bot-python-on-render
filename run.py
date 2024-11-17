@@ -21,7 +21,7 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 
-@app.post("/linebot")
+@app.post("/callback")
 async def handle_request(request: Request, background_tasks: BackgroundTasks):
     background_tasks.add_task(
         line_dify.process_request,
