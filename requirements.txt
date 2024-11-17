@@ -1,6 +1,6 @@
 aiohttp
 line-bot-sdk
 fastapi
-uvicorn
+uvicorn[standard]
 linedify
 SQLAlchemy
