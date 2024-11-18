@@ -4,7 +4,7 @@ services:
   env: python
   region: singapore
 #  repo: https://github.com/uezo/linedify.git
-  buildCommand: pip install gunicorn -r requirements.txt
+  buildCommand: pip install -r requirements.txt
   startCommand: gunicorn main:app --host 0.0.0.0 --port $PORT --reload
   plan: free
   autoDeploy: false
