@@ -2,6 +2,7 @@ services:
 - type: web
   name: line-bot-dify-render
   env: python
+  region: singapore
 #  repo: https://github.com/uezo/linedify.git
   buildCommand: pip install gunicorn -r requirements.txt
   startCommand: gunicorn main:app --reload
