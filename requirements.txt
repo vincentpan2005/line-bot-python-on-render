@@ -1,7 +1,4 @@
-aiohttp
-line-bot-sdk
 fastapi
-gunicorn
-uvicorn[standard]
-linedify
-SQLAlchemy
+uvicorn
+line-bot-sdk
+requests
