@@ -49,7 +49,7 @@ def call_dify_api(user_message):
         "query": user_message,
         "response_mode": "blocking",
         "conversation_id": "",
-        "user": "",
+        "user": "vincent-dify"
     }
     response = requests.post(url, headers=headers, json=data)
     print(response)
