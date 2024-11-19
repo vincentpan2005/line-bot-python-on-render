@@ -48,7 +48,7 @@ def handle_message(event):
     reply_token = event.reply_token
 
     # 傳送讀取中的動畫
-    asyncio.create_task(send_loading_animation(reply_token))
+    asyncio.create_task(send_loading_animation(event.source.user_id, reply_token))
 
     # 調用dify API並傳送結果
     dify_response = call_dify_api(user_message)
@@ -64,7 +64,9 @@ async def send_loading_animation(reply_token):
     with ApiClient(configuration) as api_client:
         api_instance = MessagingApi(api_client)
         loading_animation_request = ShowLoadingAnimationRequest(
-            reply_token=reply_token
+            chatId=chat_id,
+            reply_token=reply_token,
+            loadingSeconds=5
         )
         api_instance.show_loading_animation(loading_animation_request)
 
