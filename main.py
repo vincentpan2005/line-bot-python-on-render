@@ -4,6 +4,7 @@ from fastapi import FastAPI, Request
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import MessageEvent, TextMessage, TextSendMessage
+from linebot.v3.messaging import ShowLoadingAnimationRequest
 import requests
 
 app = FastAPI()
@@ -30,7 +31,8 @@ async def callback(request: Request):
     return {"message": "OK"}
 
 @handler.add(MessageEvent, message=TextMessage)
-def handle_message(event):
+async def handle_message(event):
+    await line_bot_api.show_loading_animation(ShowLoadingAnimationRequest(chatId=event.source.user_id, loadingSeconds=5))
     user_message = event.message.text
     dify_response = call_dify_api(user_message)
     line_bot_api.reply_message(
