@@ -66,7 +66,7 @@ async def send_loading_animation(chat_id, reply_token):
         loading_animation_request = ShowLoadingAnimationRequest(
             chatId = chat_id,
             reply_token = reply_token,
-            loadingSeconds = 3
+            loadingSeconds = 5
         )
         api_instance.show_loading_animation(loading_animation_request)
 
