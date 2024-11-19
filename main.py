@@ -1,5 +1,3 @@
-import sys
-import os
 from fastapi import FastAPI, Request
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
@@ -39,20 +37,23 @@ def handle_message(event):
     )
 
 def call_dify_api(user_message):
-    url = DIFY_BASE_URL + "/generate"
+    url = DIFY_BASE_URL + "/chat-messages"
     headers = {
         "Authorization": f"Bearer {DIFY_API_KEY}",
         "Content-Type": "application/json"
     }
     data = {
-        "prompt": user_message,
-        "max_tokens": 500
+        "inputs": {},
+        "query": user_message,
+        "response_mode": "blocking",
+        "conversation_id": "",
+        "user": "",
     }
     response = requests.post(url, headers=headers, json=data)
+    print(response)
     if response.status_code == 200:
-        return response.json().get("choices", [{}])[0].get("text", "Sorry, I couldn't generate a response.")
+        return response.json().get("answer", [{}])[0].get("text", "Sorry, I couldn't generate a response.")
     else:
-        print(response)
         return "Sorry, I encountered an error while generating a response."
 
 @app.get("/")
