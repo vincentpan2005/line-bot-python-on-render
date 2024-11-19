@@ -54,7 +54,7 @@ def call_dify_api(user_message):
     response = requests.post(url, headers=headers, json=data)
     print(response)
     if response.status_code == 200:
-        return response.json().get("answer", [{}])[0]
+        return response.json().get("answer", '')
     else:
         return "Sorry, I encountered an error while generating a response."
 
