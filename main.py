@@ -1,11 +1,19 @@
 import os
 import sys
-from fastapi import FastAPI, Request
-from linebot import LineBotApi, WebhookHandler
-from linebot.exceptions import InvalidSignatureError
-from linebot.models import MessageEvent, TextMessage, TextSendMessage
-from linebot.v3.messaging import ShowLoadingAnimationRequest
 import requests
+import asyncio
+from fastapi import FastAPI, Request
+from linebot.v3 import WebhookHandler
+from linebot.v3.exceptions import InvalidSignatureError
+from linebot.v3.messaging import (
+    Configuration,
+    ApiClient,
+    MessagingApi,
+    ReplyMessageRequest,
+    TextMessage,
+    PushMessageRequest,
+    ShowLoadingAnimationRequest
+)
 
 app = FastAPI()
 
@@ -17,7 +25,7 @@ LINE_CHANNEL_SECRET = os.getenv('LINE_CHANNEL_SECRET', None)
 DIFY_API_KEY = os.getenv('DIFY_API_KEY', None)
 DIFY_BASE_URL = os.getenv('DIFY_BASE_URL', None)
 
-line_bot_api = LineBotApi(LINE_CHANNEL_ACCESS_TOKEN)
+configuration = Configuration(access_token=LINE_CHANNEL_ACCESS_TOKEN)
 handler = WebhookHandler(LINE_CHANNEL_SECRET)
 
 @app.post("/callback")
@@ -32,13 +40,29 @@ async def callback(request: Request):
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    line_bot_api.show_loading_animation(ShowLoadingAnimationRequest(chatId=event.source.user_id, loadingSeconds=5))
     user_message = event.message.text
+    reply_token = event.reply_token
+
+    # 傳送讀取中的動畫
+    asyncio.create_task(send_loading_animation(reply_token))
+
+    # 調用dify API並傳送結果
     dify_response = call_dify_api(user_message)
-    line_bot_api.reply_message(
-        event.reply_token,
-        TextSendMessage(text=dify_response)
-    )
+    with ApiClient(configuration) as api_client:
+        api_instance = MessagingApi(api_client)
+        reply_message_request = ReplyMessageRequest(
+            reply_token=reply_token,
+            messages=[TextMessage(text=dify_response)]
+        )
+        api_instance.reply_message(reply_message_request)
+
+async def send_loading_animation(reply_token):
+    with ApiClient(configuration) as api_client:
+        api_instance = MessagingApi(api_client)
+        loading_animation_request = ShowLoadingAnimationRequest(
+            reply_token=reply_token
+        )
+        api_instance.show_loading_animation(loading_animation_request)
 
 def call_dify_api(user_message):
     url = DIFY_BASE_URL + "/chat-messages"
@@ -54,7 +78,6 @@ def call_dify_api(user_message):
         "user": "vincent-dify"
     }
     response = requests.post(url, headers=headers, json=data)
-    print(response)
     if response.status_code == 200:
         return response.json().get("answer", '')
     else:
