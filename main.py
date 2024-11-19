@@ -14,6 +14,10 @@ from linebot.v3.messaging import (
     PushMessageRequest,
     ShowLoadingAnimationRequest
 )
+from linebot.v3.webhooks import (
+    MessageEvent,
+    TextMessageContent
+)
 
 app = FastAPI()
 
@@ -38,7 +42,7 @@ async def callback(request: Request):
         return {"message": "Invalid signature"}
     return {"message": "OK"}
 
-@handler.add(MessageEvent, message=TextMessage)
+@handler.add(MessageEvent, message=TextMessageContent)
 def handle_message(event):
     user_message = event.message.text
     reply_token = event.reply_token
