@@ -60,7 +60,7 @@ def handle_message(event):
         )
         api_instance.reply_message(reply_message_request)
 
-async def send_loading_animation(reply_token):
+async def send_loading_animation(chat_id, reply_token):
     with ApiClient(configuration) as api_client:
         api_instance = MessagingApi(api_client)
         loading_animation_request = ShowLoadingAnimationRequest(
