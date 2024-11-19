@@ -14,7 +14,7 @@ LINE_CHANNEL_SECRET = os.getenv('LINE_CHANNEL_SECRET', None)
 
 # 替換為你的dify API Key
 DIFY_API_KEY = os.getenv('DIFY_API_KEY', None)
-DIFY_BASE_URL=os.getenv('DIFY_BASE_URL', None)
+DIFY_BASE_URL = os.getenv('DIFY_BASE_URL', None)
 
 line_bot_api = LineBotApi(LINE_CHANNEL_ACCESS_TOKEN)
 handler = WebhookHandler(LINE_CHANNEL_SECRET)
@@ -52,6 +52,7 @@ def call_dify_api(user_message):
     if response.status_code == 200:
         return response.json().get("choices", [{}])[0].get("text", "Sorry, I couldn't generate a response.")
     else:
+        print(response)
         return "Sorry, I encountered an error while generating a response."
 
 @app.get("/")
