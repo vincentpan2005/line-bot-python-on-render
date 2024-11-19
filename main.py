@@ -1,3 +1,5 @@
+import sys
+import os
 from fastapi import FastAPI, Request
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
