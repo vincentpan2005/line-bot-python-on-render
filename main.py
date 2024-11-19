@@ -31,7 +31,7 @@ async def callback(request: Request):
     return {"message": "OK"}
 
 @handler.add(MessageEvent, message=TextMessage)
-async def handle_message(event):
+def handle_message(event):
     await line_bot_api.show_loading_animation(ShowLoadingAnimationRequest(chatId=event.source.user_id, loadingSeconds=5))
     user_message = event.message.text
     dify_response = call_dify_api(user_message)
