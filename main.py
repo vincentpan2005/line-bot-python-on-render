@@ -31,7 +31,6 @@ DIFY_BASE_URL = os.getenv('DIFY_BASE_URL', None)
 
 configuration = Configuration(access_token=LINE_CHANNEL_ACCESS_TOKEN)
 handler = WebhookHandler(LINE_CHANNEL_SECRET)
-api_client = ApiClient(configuration)
 
 @app.post("/callback")
 async def callback(request: Request):
@@ -48,11 +47,9 @@ def handle_message(event):
     user_message = event.message.text
     reply_token = event.reply_token
 
-    # 傳送讀取中的動畫
-    asyncio.create_task(send_loading_animation(event.source.user_id, reply_token))
-
     # 調用dify API並傳送結果
     dify_response = call_dify_api(user_message)
+    api_client = ApiClient(configuration)
     api_instance = MessagingApi(api_client)
     reply_message_request = ReplyMessageRequest(
         reply_token=reply_token,
@@ -60,7 +57,11 @@ def handle_message(event):
     )
     api_instance.reply_message(reply_message_request)
 
+    # 傳送讀取中的動畫
+    asyncio.create_task(send_loading_animation(event.source.user_id, reply_token))
+
 async def send_loading_animation(chat_id, reply_token):
+    api_client = ApiClient(configuration)
     api_instance = MessagingApi(api_client)
     loading_animation_request = ShowLoadingAnimationRequest(
         chatId = chat_id,
