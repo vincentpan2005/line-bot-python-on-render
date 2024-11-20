@@ -48,6 +48,9 @@ def handle_message(event):
     user_message = event.message.text
     reply_token = event.reply_token
 
+    # 傳送讀取中的動畫
+    asyncio.create_task(send_loading_animation(event.source.user_id, reply_token))
+
     # 調用dify API並傳送結果
     dify_response = call_dify_api(user_message)
     api_instance = MessagingApi(api_client)
@@ -56,9 +59,6 @@ def handle_message(event):
         messages=[TextMessage(text=dify_response)]
     )
     api_instance.reply_message(reply_message_request)
-
-    # 傳送讀取中的動畫
-    asyncio.create_task(send_loading_animation(event.source.user_id, reply_token))
 
 async def send_loading_animation(chat_id, reply_token):
     api_instance = MessagingApi(api_client)
