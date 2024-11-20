@@ -67,7 +67,8 @@ async def send_loading_animation(chat_id, reply_token):
         reply_token = reply_token,
         loadingSeconds = 5
     )
-        api_instance.show_loading_animation(loading_animation_request)
+    
+    api_instance.show_loading_animation(loading_animation_request)
 
 def call_dify_api(user_message):
     url = DIFY_BASE_URL + "/chat-messages"
