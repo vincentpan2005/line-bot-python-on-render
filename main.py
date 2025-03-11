@@ -58,7 +58,7 @@ def handle_message(event):
     api_instance.reply_message(reply_message_request)
 
     # 傳送讀取中的動畫
-    asyncio.create_task(send_loading_animation(event.source.user_id, reply_token))
+    #asyncio.create_task(send_loading_animation(event.source.user_id, reply_token))
 
 async def send_loading_animation(chat_id, reply_token):
     api_client = ApiClient(configuration)
