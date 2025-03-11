@@ -88,7 +88,7 @@ def call_dify_api(user_message):
     if response.status_code == 200:
         return response.json().get("answer", '')
     else:
-        return "Sorry, I encountered an error while generating a response."
+        return "Sorry, I encountered an error while generating a response:"+str(response.status_code)
 
 @app.get("/")
 def read_root():
